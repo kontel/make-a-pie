@@ -74,7 +74,7 @@ export default function Vote() {
               </CardHeader>
               <CardContent>
                 <Image
-                  src={pie.imageData}
+                  src={pie.imageData || `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`}
                   alt={pie.title}
                   width={400}
                   height={192}
@@ -93,7 +93,7 @@ export default function Vote() {
                   <DialogContent>
                     <DialogTitle>{pie.title}</DialogTitle>
                     <Image
-                      src={pie.imageData}
+                      src={pie.imageData || `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`}
                       alt={pie.title}
                       width={400}
                       height={256}
