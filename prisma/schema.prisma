@@ -11,7 +11,7 @@ model Pie {
   id          String   @id @default(cuid())
   title       String
   description String
-  imageUrl    String
+  imageData   String?
   userName    String
   votes       Vote[]
   createdAt   DateTime @default(now())

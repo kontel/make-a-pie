@@ -11,8 +11,8 @@ import { usePost } from '@/hooks/useApi'
 export default function SubmitPie() {
   const [userName, setUserName] = useState<string | null>(null)
   const [title, setTitle] = useState('')
+  const [image, setImage] = useState<File | null>(null);
   const [description, setDescription] = useState('')
-  const [image, setImage] = useState<File | null>(null)
   const router = useRouter()
   const [createPie] = usePost('/api/pies')
 
@@ -29,12 +29,17 @@ export default function SubmitPie() {
     e.preventDefault()
     if (!userName) return
 
-    // In a real application, you would upload the image to a storage service
-    // and get a URL back. For this example, we'll just use a placeholder.
-    const imageUrl = '/placeholder.svg'
-
     try {
-      await createPie({ title, description, imageUrl, userName })
+      if (!image) return
+      const reader = new FileReader()
+      reader.readAsDataURL(image)
+      await new Promise((resolve) => {
+        reader.onload = () => {
+          const imageData = reader.result as string
+          createPie({ title, description, imageData, userName })
+          resolve(null)
+        }
+      })
       router.push('/dashboard')
     } catch (error) {
       console.error('Failed to submit pie:', error)
