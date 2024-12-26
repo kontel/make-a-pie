@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useGet, usePost } from "@/hooks/useApi";
+import type { PieWithVotes } from '@/types/prisma';
 
 export default function Vote() {
   const [userName, setUserName] = useState<string | null>(null);
@@ -21,7 +22,7 @@ export default function Vote() {
     data: pies,
     error: piesError,
     isLoading: piesLoading,
-  } = useGet("/api/pies");
+  } = useGet<PieWithVotes[]>('/api/pies');
   const [createVote] = usePost("/api/votes");
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export default function Vote() {
       </p>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {pies &&
-          pies.map((pie: any) => (
+          pies.map((pie: PieWithVotes) => (
             <Card key={pie.id}>
               <CardHeader>
                 <CardTitle>{pie.title}</CardTitle>
@@ -78,7 +79,8 @@ export default function Vote() {
                   width={400}
                   height={192}
                   className="w-full h-48 object-cover rounded-md"
-                  onError={(e: any) => {
+                  onError={(e: unknown) => {
+                    // @ts-expect-error default image
                     e.target.src = `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`
                   }}
                 />
@@ -96,8 +98,9 @@ export default function Vote() {
                       width={400}
                       height={256}
                       className="w-full h-64 object-cover rounded-md"
-                      onError={(e: any) => {
-                        e.target.src = `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`
+                      onError={(e: unknown) => {
+                        // @ts-expect-error default image
+                        e.target.src = `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`;
                       }}
                     />
                     <p>{pie.description}</p>

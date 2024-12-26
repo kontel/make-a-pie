@@ -30,7 +30,9 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Submit Your Pie</CardTitle>
-            <CardDescription>Upload a photo and details of your pie</CardDescription>
+            <CardDescription>
+              Upload a photo and details of your pie
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Link href="/submit-pie">
@@ -41,7 +43,9 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Vote for Pies</CardTitle>
-            <CardDescription>View and vote for other participants' pies</CardDescription>
+            <CardDescription>
+              View and vote for other participants&apos; pies
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Link href="/vote">
@@ -51,6 +55,6 @@ export default function Dashboard() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
 

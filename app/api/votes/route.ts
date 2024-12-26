@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import type { Vote } from "@prisma/client";
 
 export async function GET() {
   const votes = await prisma.vote.findMany({
@@ -11,12 +12,12 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { stars, userName, pieId } = await request.json()
+  const { stars, userName, pieId }: Partial<Vote> = await request.json()
   const vote = await prisma.vote.create({
     data: {
-      stars,
-      userName,
-      pieId,
+      stars: stars!,
+      userName: userName!,
+      pieId: pieId!,
     },
   })
   return NextResponse.json(vote)

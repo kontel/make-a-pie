@@ -69,19 +69,20 @@ export default function SubmitPie() {
           <div>
             <Textarea
               placeholder="Short description"
+              rows={5}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              required
             />
           </div>
-          <div>
+            <div>
             <Input
               type="file"
               accept="image/*"
+              capture="environment"
               onChange={(e) => setImage(e.target.files?.[0] || null)}
               required
             />
-          </div>
+            </div>
           <Button type="submit" className="w-full">
             Submit Pie
           </Button>
