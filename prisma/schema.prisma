@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pie {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String
+  userName    String
+  votes       Vote[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  stars     Int
+  userName  String
+  pieId     String
+  pie       Pie      @relation(fields: [pieId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
