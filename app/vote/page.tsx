@@ -78,6 +78,9 @@ export default function Vote() {
                   width={400}
                   height={192}
                   className="w-full h-48 object-cover rounded-md"
+                  onError={(e: any) => {
+                    e.target.src = `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`
+                  }}
                 />
                 <Dialog>
                   <DialogTrigger asChild>
@@ -93,6 +96,9 @@ export default function Vote() {
                       width={400}
                       height={256}
                       className="w-full h-64 object-cover rounded-md"
+                      onError={(e: any) => {
+                        e.target.src = `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`
+                      }}
                     />
                     <p>{pie.description}</p>
                   </DialogContent>

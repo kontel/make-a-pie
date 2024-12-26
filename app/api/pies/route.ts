@@ -11,15 +11,15 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const { title, description, imageUrl, userName } = await request.json()
+  const { title, description, imageData, userName } = await request.json()
   const pie = await prisma.pie.create({
     data: {
       title,
       description,
-      imageUrl,
+      imageData,
       userName,
     },
-  })
+  });
   return NextResponse.json(pie)
 }
 

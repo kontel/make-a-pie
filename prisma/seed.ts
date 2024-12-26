@@ -8,9 +8,7 @@ async function main() {
     data: {
       title: "Apple Pie",
       description: "A classic American pie",
-      imageData:
-        "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-
+      imageData: "https://placehold.co/400x300/e8c39e/ffffff?text=Apple+Pie",
       userName: "Alice",
     },
   });
@@ -18,9 +16,7 @@ async function main() {
     data: {
       title: "Cherry Pie",
       description: "Sweet and tart",
-      imageData:
-        "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-
+      imageData: "https://placehold.co/400x300/cc3333/ffffff?text=Cherry+Pie",
       userName: "Bob",
     },
   });
@@ -28,8 +24,7 @@ async function main() {
     data: {
       title: "Blueberry Pie",
       description: "Bursting with flavor",
-      imageData:
-        "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+      imageData: "https://placehold.co/400x300/4444cc/ffffff?text=Blueberry+Pie",
       userName: "Charlie",
     },
   });
