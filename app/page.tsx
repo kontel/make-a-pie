@@ -1,38 +1,53 @@
-'use client'
+"use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useLocalStorage } from "usehooks-ts";
 
 export default function Home() {
-  const [name, setName] = useState('')
-  const router = useRouter()
+  const [name, setName] = useState("");
+  const router = useRouter();
+
+  // Set { initializeWithValue: false } in SSR context
+  const [localStorageUserName, setLocalStorageUserName] = useLocalStorage(
+    "userName",
+    "",
+    {
+      initializeWithValue: false,
+    }
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (name.trim()) {
-      localStorage.setItem('userName', name.trim())
-      router.push('/dashboard')
+      setLocalStorageUserName(name.trim());
+      router.push("/dashboard");
     }
-  }
+  };
 
   useEffect(() => {
-    const savedName = localStorage.getItem('userName')
-    if (savedName) {
-      setName(savedName)
+    if (localStorageUserName) {
+      setName(localStorageUserName);
     }
-  }, [])
+  }, []);
 
   const handleReset = () => {
-    localStorage.removeItem('userName')
-    setName('')
-  }
+    localStorage.removeItem("userName");
+    setName("");
+  };
 
   const handleContinue = () => {
-    router.push('/dashboard')
-  }
+    router.push("/dashboard");
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center">
@@ -46,7 +61,7 @@ export default function Home() {
           )}
         </CardHeader>
         <CardContent>
-          {!localStorage.getItem("userName") ? (
+          {!localStorageUserName ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input
                 type="text"
@@ -86,4 +101,3 @@ export default function Home() {
     </div>
   );
 }
-
