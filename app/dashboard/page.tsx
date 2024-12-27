@@ -1,23 +1,23 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useLocalStorage } from "usehooks-ts";
 
 export default function Dashboard() {
-  const [userName, setUserName] = useState<string | null>(null)
+  const [userName] = useLocalStorage("userName", "", {
+    initializeWithValue: true,
+  });
   const router = useRouter()
 
   useEffect(() => {
-    const storedName = localStorage.getItem('userName')
-    if (!storedName) {
+    if (!userName) {
       router.push('/')
-    } else {
-      setUserName(storedName)
     }
-  }, [router])
+  }, [router, userName])
 
   if (!userName) {
     return null
