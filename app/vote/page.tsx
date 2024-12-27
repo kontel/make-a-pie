@@ -74,33 +74,33 @@ export default function Vote() {
               </CardHeader>
               <CardContent>
                 <Image
-                  src={pie.imageData || `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`}
+                  src={pie.imageData || `https://placehold.co/400x300/cccccc/333333.png?text=${pie.title}`}
                   alt={pie.title}
                   width={400}
                   height={192}
                   className="w-full h-48 object-cover rounded-md"
-                  onError={(e: unknown) => {
-                    // @ts-expect-error default image
-                    e.target.src = `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`
+                  onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = `https://placehold.co/400x300/cccccc/333333.png?text=${pie.title}`;
                   }}
                 />
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline" className="w-full">
+                    <Button variant="outline" className="w-full my-2">
                       View Details
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogTitle>{pie.title}</DialogTitle>
                     <Image
-                      src={pie.imageData || `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`}
+                      src={pie.imageData || `https://placehold.co/400x300/cccccc/333333.png?text=${pie.title}`}
                       alt={pie.title}
                       width={400}
                       height={256}
                       className="w-full h-64 object-cover rounded-md"
-                      onError={(e: unknown) => {
-                        // @ts-expect-error default image
-                        e.target.src = `https://placehold.co/400x300/cccccc/333333?text=${pie.title}`;
+                      onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = `https://placehold.co/400x300/cccccc/333333.png?text=${pie.title}`;
                       }}
                     />
                     <p>{pie.description}</p>
@@ -112,7 +112,7 @@ export default function Vote() {
                     votes[pie.id] === 3 ||
                     Object.values(votes).reduce((a, b) => a + b, 0) === 3
                   }
-                  className="w-full"
+                  className="w-full mb-2"
                 >
                   Vote ({votes[pie.id] || 0} stars)
                 </Button>
