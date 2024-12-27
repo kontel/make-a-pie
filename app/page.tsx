@@ -41,7 +41,7 @@ export default function Home() {
   }, []);
 
   const handleReset = () => {
-    localStorage.removeItem("userName");
+    setLocalStorageUserName("");
     setName("");
   };
 
