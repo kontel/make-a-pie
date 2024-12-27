@@ -95,9 +95,9 @@ export default function Home() {
               </div>
             </div>
           )}
-          <p className="mt-4 text-sm text-gray-500">
-            Note: This is a trust-based application. Please use your real name.
-          </p>
+            <p className="mt-4 p-3 text-sm bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 font-medium">
+            ⚠️ Important: You must use your real name. This system operates on trust and honesty.
+            </p>
         </CardContent>
       </Card>
     </div>
