@@ -1,9 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { LoginForm } from "@/components/auth/LoginForm";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
@@ -11,93 +9,52 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useLocalStorage } from "usehooks-ts";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Home() {
-  const [name, setName] = useState("");
-  const router = useRouter();
-
-  // Set { initializeWithValue: false } in SSR context
-  const [localStorageUserName, setLocalStorageUserName] = useLocalStorage(
-    "userName",
-    "",
-    {
-      initializeWithValue: false,
-    }
-  );
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (name.trim()) {
-      setLocalStorageUserName(name.trim());
-      router.push("/dashboard");
-    }
-  };
-
-  useEffect(() => {
-    if (localStorageUserName) {
-      setName(localStorageUserName);
-    }
-  }, []);
-
-  const handleReset = () => {
-    setLocalStorageUserName("");
-    setName("");
-  };
-
-  const handleContinue = () => {
-    router.push("/dashboard");
-  };
+  const { name, localStorageUserName, handleLogin, reset, continueToApp } = useAuth();
 
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Welcome to Make a Pie!</CardTitle>
-          {name ? (
-            <CardDescription>Welcome back, {name}!</CardDescription>
-          ) : (
-            <CardDescription>Enter your name to get started</CardDescription>
-          )}
+          <CardTitle className="text-lg font-medium">
+            Welcome to Make a Pie! 🥧
+          </CardTitle>
+          <div className="space-y-2">
+            <CardDescription className="text-center pb-2 mt-4">
+              🌟 Bake, Share, and Vote for Amazing Pies! 🌟
+            </CardDescription>
+            <p className="text-sm text-muted-foreground text-center">
+              Join our delicious community where you can showcase your baking
+              skills, discover mouthwatering pie recipes, and vote for your
+              favorites! Each person gets 3 stars ⭐⭐⭐ to award to the best
+              pies.
+            </p>
+          </div>
         </CardHeader>
         <CardContent>
           {!localStorageUserName ? (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                type="text"
-                placeholder="Your Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-              <Button type="submit" className="w-full">
-                Enter
-              </Button>
-            </form>
+            <LoginForm onSubmit={handleLogin} initialValue={name} />
           ) : (
             <div className="space-y-4">
               <div className="p-4 bg-gray-50 rounded-lg text-center">
-                <p className="text-lg font-medium">
-                  Logged in as: {localStorageUserName}
-                </p>
+                <p className="text-md font-medium">Welcome back, {name}!</p>
               </div>
               <div className="flex gap-4">
-                <Button
-                  onClick={handleReset}
-                  variant="outline"
-                  className="flex-1"
-                >
+                <Button onClick={reset} variant="outline" className="flex-1">
                   Reset Name
                 </Button>
-                <Button onClick={handleContinue} className="flex-1">
+                <Button onClick={continueToApp} className="flex-1">
                   Continue
                 </Button>
               </div>
             </div>
           )}
-            <p className="mt-4 p-3 text-sm bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 font-medium">
-            ⚠️ Important: You must use your real name. This system operates on trust and honesty.
-            </p>
+          <p className="mt-4 p-3 text-sm bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 font-medium">
+            ⚠️ Important: You must use your real name. This system operates on
+            trust and honesty.
+          </p>
         </CardContent>
       </Card>
     </div>

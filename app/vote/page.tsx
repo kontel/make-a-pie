@@ -33,8 +33,6 @@ export default function Vote() {
   // Initialize votes from database when data is loaded
   useEffect(() => {
     if (pies && userName) {
-      console.log("pies", pies);
-      console.log("userName", userName);
 
       const userVotes = pies.reduce((acc, pie) => {
         const userVotesCount = pie.votes.filter(
