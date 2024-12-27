@@ -24,11 +24,16 @@ A trust-based pie competition platform built with Next.js, where users can submi
 1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/make-a-pie.git
+cd make-a-pie
 ```
 
 2. Install dependencies:
 ```bash
-npm install
+# Install PNPM if you haven't already
+npm install -g pnpm
+
+# Install project dependencies
+pnpm install
 ```
 
 3. Set up your database:
@@ -36,16 +41,26 @@ npm install
 # Copy example env file
 cp .env.example .env
 # Update DATABASE_URL in .env
-npx prisma generate
-npx prisma db push
+pnpm prisma generate
+pnpm prisma db push
 ```
 
 4. Run the development server:
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open [http://localhost:3001](http://localhost:3001) to view the application.
+
+## Development Scripts
+
+```bash
+pnpm dev        # Start development server
+pnpm build      # Build for production
+pnpm start      # Start production server
+pnpm lint       # Run ESLint
+pnpm prisma     # Run Prisma commands
+```
 
 ## Contributing
 
