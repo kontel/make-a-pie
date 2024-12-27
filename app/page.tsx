@@ -77,7 +77,9 @@ export default function Home() {
           ) : (
             <div className="space-y-4">
               <div className="p-4 bg-gray-50 rounded-lg text-center">
-                <p className="text-lg font-medium">Logged in as: {name}</p>
+                <p className="text-lg font-medium">
+                  Logged in as: {localStorageUserName}
+                </p>
               </div>
               <div className="flex gap-4">
                 <Button

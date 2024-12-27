@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { MainNav } from "@/components/ui/nav";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -9,7 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'Make a Pie',
-  description: 'A fun pie-making and voting event',
+  description: 'A pie competition app',
 }
 
 export default function RootLayout({
@@ -22,9 +23,14 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased`}
       >
-        <main className="container mx-auto px-4 py-8">
-          {children}
-        </main>
+        <div className="flex min-h-screen flex-col">
+          <header className="border-b">
+            <div className="container flex h-16 items-center px-4">
+              <MainNav />
+            </div>
+          </header>
+          <main className="flex-1 p-4">{children}</main>
+        </div>
       </body>
     </html>
   )
