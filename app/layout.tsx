@@ -1,28 +1,41 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 import { MainNav } from "@/components/ui/nav";
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-sans',
-})
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
-  title: 'Make a Pie',
-  description: 'A pie competition app',
-}
+  title: "Make a Pie",
+  description: "A pie competition app",
+  icons: {
+    icon: [
+      {
+        url: "/icon.jpg",
+        href: "/icon.jpg",
+      },
+    ],
+    apple: [
+      {
+        url: "/apple-icon.jpg",
+        sizes: "180x180",
+        type: "image/jpg",
+      },
+    ],
+  },
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" className={inter.className}>
-      <body
-        className={`${inter.variable} font-sans antialiased`}
-      >
+      <body className={`${inter.variable} font-sans antialiased`}>
         <div className="flex min-h-screen flex-col">
           <header className="border-b">
             <div className="container flex h-16 items-center px-4">
@@ -33,6 +46,5 @@ export default function RootLayout({
         </div>
       </body>
     </html>
-  )
+  );
 }
-
