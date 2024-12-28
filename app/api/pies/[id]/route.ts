@@ -1,14 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+type RouteSegmentContext = {
+  params: {
+    id: string;
+  };
+};
+
 export async function DELETE(
-  _request: NextRequest,
-  context: { params: { id: string } }
+  req: NextRequest,
+  { params }: RouteSegmentContext
 ) {
   try {
     const deletedPie = await prisma.pie.delete({
       where: {
-        id: context.params.id,
+        id: params.id,
       },
     });
 
