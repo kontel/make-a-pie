@@ -65,3 +65,34 @@ export function usePost<T, U>(url: string): [(data: U) => Promise<T>, ApiRespons
   return [postData, { data, error, isLoading }]
 }
 
+export function useDelete<T>(url: string): [() => Promise<T>, ApiResponse<T>] {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const deleteData = async (): Promise<T> => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const result = await response.json();
+      setData(result);
+      return result;
+    } catch (error) {
+      setError(error as Error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return [deleteData, { data, error, isLoading }];
+}
+

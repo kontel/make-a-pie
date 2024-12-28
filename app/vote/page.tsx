@@ -15,6 +15,7 @@ import {
 import { useGet, usePost } from "@/hooks/useApi";
 import type { PieWithVotes } from "@/types/prisma";
 import { cn } from "@/lib/utils";
+import { PieGridSkeleton } from "@/components/ui/pie-skeleton";
 
 export default function Vote() {
   const [userName] = useLocalStorage("userName", "", {
@@ -77,6 +78,14 @@ export default function Vote() {
 
   if (!userName || piesLoading) {
     return null;
+  }
+
+  if (piesLoading) {
+    return (
+      <div className="container py-8">
+        <PieGridSkeleton />
+      </div>
+    );
   }
 
   if (piesError) {
