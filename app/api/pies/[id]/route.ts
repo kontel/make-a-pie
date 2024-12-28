@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-export async function DELETE(_request: NextRequest, { params }: Props) {
+export async function DELETE(
+  _request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
     const deletedPie = await prisma.pie.delete({
       where: {
-        id: params.id,
+        id: context.params.id,
       },
     });
 
