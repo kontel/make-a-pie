@@ -1,10 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+export async function DELETE(_request: NextRequest, { params }: Props) {
   try {
     const deletedPie = await prisma.pie.delete({
       where: {
@@ -13,10 +16,9 @@ export async function DELETE(
     });
 
     return NextResponse.json(deletedPie);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to delete pie" },
+      { error: `Failed to delete pie: ${error instanceof Error ? error.message : 'Unknown error'}` },
       { status: 500 }
     );
   }

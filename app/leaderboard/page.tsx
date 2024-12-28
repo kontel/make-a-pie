@@ -14,6 +14,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGet } from "@/hooks/useApi";
 import type { PieWithVotes, Vote } from "@/types/prisma";
+import { LeaderboardSkeleton } from "@/components/ui/leaderboard-skeleton";
 
 export default function Leaderboard() {
   const [userName] = useLocalStorage("userName", "", {
@@ -32,8 +33,12 @@ export default function Leaderboard() {
     }
   }, [router, userName]);
 
-  if (!userName || piesLoading) {
+  if (!userName) {
     return null;
+  }
+
+  if (piesLoading) {
+    return <LeaderboardSkeleton />;
   }
 
   if (piesError) {
@@ -50,7 +55,7 @@ export default function Leaderboard() {
     const allStarsToOnePie = new Set(
       pies.flatMap(pie => 
         pie.votes
-          .filter(vote => vote.stars === 5)
+          .filter(vote => vote.stars === 3)
           .map(vote => vote.userName)
       )
     ).size;

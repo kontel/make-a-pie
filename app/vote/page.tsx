@@ -76,7 +76,7 @@ export default function Vote() {
     }
   };
 
-  if (!userName || piesLoading) {
+  if (!userName) {
     return null;
   }
 
