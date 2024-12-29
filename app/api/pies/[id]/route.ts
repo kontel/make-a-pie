@@ -1,18 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+import  { NextResponse, NextRequest } from 'next/server';
 import prisma from "@/lib/prisma";
 
 export async function DELETE(
-  _req: NextRequest,
-  context: { params: { id: string } }
-): Promise<NextResponse> {
+  request: NextRequest
+) {
   try {
+    const searchParams = request.nextUrl.searchParams;
+    const pieId = searchParams.get("id");
+
     const deletedPie = await prisma.pie.delete({
       where: {
-        id: context.params.id,
+        id: pieId!,
       },
     });
 
     return NextResponse.json(deletedPie);
+
   } catch (error) {
     return NextResponse.json(
       { error: `Failed to delete pie: ${error instanceof Error ? error.message : 'Unknown error'}` },
@@ -20,3 +23,4 @@ export async function DELETE(
     );
   }
 }
+
