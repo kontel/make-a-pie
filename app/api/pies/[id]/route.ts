@@ -5,8 +5,7 @@ export async function DELETE(
   request: NextRequest
 ) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const pieId = searchParams.get("id");
+    const pieId = request.nextUrl.pathname.split('/').pop();
 
     const deletedPie = await prisma.pie.delete({
       where: {
