@@ -23,7 +23,7 @@ import {
 
 interface SubmittedPieViewProps {
   userPie: PieWithVotes;
-  onPieDeleted: () => void;
+  onPieDeleted?: () => void;
 }
 
 export function SubmittedPieView({
@@ -44,7 +44,7 @@ export function SubmittedPieView({
           description: "You can now submit a new pie.",
           variant: "default",
         });
-        onPieDeleted();
+        onPieDeleted?.();
       }
     } catch (error) {
       console.error("Failed to delete pie:", error);

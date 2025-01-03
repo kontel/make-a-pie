@@ -9,16 +9,3 @@ export async function GET() {
   });
   return NextResponse.json(pies);
 }
-
-export async function POST(request: Request) {
-  const { title, description, imageData, userName } = await request.json();
-  const pie = await prisma.pie.create({
-    data: {
-      title,
-      description,
-      imageData,
-      userName,
-    },
-  });
-  return NextResponse.json(pie);
-}

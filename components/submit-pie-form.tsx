@@ -8,11 +8,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { submitPie } from "@/app/actions/submit-pie";
-import type { PieWithVotes } from "@/types/prisma";
 
 interface SubmitPieFormProps {
   userName: string;
-  onPieSubmitted: (pie: PieWithVotes) => void;
 }
 
 // Create a submit button component to use formStatus
@@ -33,10 +31,7 @@ function SubmitButton() {
   );
 }
 
-export function SubmitPieForm({
-  userName,
-  onPieSubmitted,
-}: SubmitPieFormProps) {
+export function SubmitPieForm({ userName }: SubmitPieFormProps) {
   const { toast } = useToast();
 
   async function clientAction(formData: FormData) {
