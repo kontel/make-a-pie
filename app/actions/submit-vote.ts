@@ -17,6 +17,11 @@ export async function submitVote(
     });
     return { success: true, vote };
   } catch (error) {
-    return { success: false, error: "Failed to submit vote" };
+    return {
+      success: false,
+      error: `Failed to submit vote: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`,
+    };
   }
 }
