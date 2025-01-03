@@ -35,6 +35,8 @@ export function SubmittedPieView({
   const [isResubmitting, setIsResubmitting] = useState(false);
 
   const handleResubmit = async () => {
+    if (!userPie) return;
+
     try {
       setIsResubmitting(true);
       const result = await deletePie(userPie.id);
@@ -45,6 +47,14 @@ export function SubmittedPieView({
           variant: "default",
         });
         onPieDeleted?.();
+        router.refresh();
+        router.push("/submit-pie");
+      } else {
+        toast({
+          title: "Error",
+          description: result.error,
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error("Failed to delete pie:", error);
