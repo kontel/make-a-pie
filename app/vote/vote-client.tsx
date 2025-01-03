@@ -71,12 +71,13 @@ export function VoteClient({ initialPies }: VoteClientProps) {
             </CardHeader>
             <CardContent>
               {pie.imageData && (
-                <div className="relative w-full h-48 mb-4">
+                <div className="relative aspect-square w-full mb-4 rounded-xl overflow-hidden">
                   <Image
                     src={pie.imageData}
                     alt={pie.title}
                     fill
-                    className="object-cover rounded-md"
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               )}
