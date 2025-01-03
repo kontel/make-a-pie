@@ -4,33 +4,48 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useDelete } from "@/hooks/useApi";
+import { deletePie } from "@/app/actions/delete-pie";
 import { Loader2 } from "lucide-react";
 import type { PieWithVotes } from "@/types/prisma";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface SubmittedPieViewProps {
   userPie: PieWithVotes;
+  onPieDeleted: () => void;
 }
 
-export function SubmittedPieView({ userPie }: SubmittedPieViewProps) {
+export function SubmittedPieView({
+  userPie,
+  onPieDeleted,
+}: SubmittedPieViewProps) {
   const { toast } = useToast();
   const router = useRouter();
   const [isResubmitting, setIsResubmitting] = useState(false);
-  const [deletePie] = useDelete(`/api/pies/${userPie.id}`);
 
   const handleResubmit = async () => {
     try {
       setIsResubmitting(true);
-      await deletePie();
-      toast({
-        title: "Pie deleted",
-        description: "You can now submit a new pie.",
-        variant: "default",
-      });
-      window.location.reload();
+      const result = await deletePie(userPie.id);
+      if (result.success) {
+        toast({
+          title: "Pie deleted",
+          description: "You can now submit a new pie.",
+          variant: "default",
+        });
+        onPieDeleted();
+      }
     } catch (error) {
       console.error("Failed to delete pie:", error);
       toast({
@@ -70,15 +85,12 @@ export function SubmittedPieView({ userPie }: SubmittedPieViewProps) {
               <p className="text-gray-600 text-sm">{userPie.description}</p>
             </div>
             <div className="flex gap-2">
-              <Button 
-                onClick={() => router.push("/vote")}
-                className="flex-1"
-              >
+              <Button onClick={() => router.push("/vote")} className="flex-1">
                 Go Vote For Pies
               </Button>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button 
+                  <Button
                     variant="destructive"
                     className="flex-1"
                     disabled={isResubmitting}
@@ -97,7 +109,8 @@ export function SubmittedPieView({ userPie }: SubmittedPieViewProps) {
                   <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                      This will delete your current pie submission. This action cannot be undone.
+                      This will delete your current pie submission. This action
+                      cannot be undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>

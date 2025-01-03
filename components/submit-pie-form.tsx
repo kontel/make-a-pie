@@ -1,64 +1,64 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { usePost } from "@/hooks/useApi";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useFormStatus } from "react-dom";
+import { submitPie } from "@/app/actions/submit-pie";
+import type { PieWithVotes } from "@/types/prisma";
 
 interface SubmitPieFormProps {
   userName: string;
+  onPieSubmitted: (pie: PieWithVotes) => void;
 }
 
-export function SubmitPieForm({ userName }: SubmitPieFormProps) {
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState<File | null>(null);
-  const [description, setDescription] = useState("");
-  const [createPie] = usePost("/api/pies");
+// Create a submit button component to use formStatus
+function SubmitButton() {
+  const { pending } = useFormStatus();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  return (
+    <Button type="submit" className="w-full" disabled={pending}>
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Submitting...
+        </>
+      ) : (
+        "Submit Pie"
+      )}
+    </Button>
+  );
+}
+
+export function SubmitPieForm({
+  userName,
+  onPieSubmitted,
+}: SubmitPieFormProps) {
+  const { toast } = useToast();
+
+  async function clientAction(formData: FormData) {
     if (!userName) return;
 
-    try {
-      setIsSubmitting(true);
-      if (!image) return;
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      await new Promise((resolve) => {
-        reader.onload = () => {
-          const imageData = reader.result as string;
-          createPie({
-            title,
-            description,
-            imageData,
-            userName: userName.replaceAll('"', ""),
-          });
-          resolve(null);
-        };
-      });
+    formData.append("userName", userName);
+    const result = await submitPie(formData);
+
+    if (result.success) {
       toast({
         title: "Success!",
         description: "Your pie has been submitted successfully.",
         variant: "default",
       });
-      window.location.reload();
-    } catch (error) {
-      console.error("Failed to submit pie:", error);
+    } else {
       toast({
         title: "Error",
         description: "Failed to submit your pie. Please try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  }
 
   return (
     <Card className="max-w-2xl mx-auto">
@@ -66,43 +66,27 @@ export function SubmitPieForm({ userName }: SubmitPieFormProps) {
         <CardTitle>Submit Your Pie</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form action={clientAction} className="space-y-4">
           <div>
-            <Input
-              type="text"
-              placeholder="Pie Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
+            <Input type="text" name="title" placeholder="Pie Title" required />
           </div>
           <div>
             <Textarea
+              name="description"
               placeholder="Short description"
               rows={5}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div>
             <Input
               type="file"
+              name="image"
               accept="image/*"
               capture="environment"
-              onChange={(e) => setImage(e.target.files?.[0] || null)}
               required
             />
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Submitting...
-              </>
-            ) : (
-              "Submit Pie"
-            )}
-          </Button>
+          <SubmitButton />
         </form>
       </CardContent>
     </Card>
