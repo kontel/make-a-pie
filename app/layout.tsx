@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { MainNav } from "@/components/ui/nav";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <div className="flex min-h-screen flex-col">
           <Analytics />
+          <SpeedInsights/>
           <header className="border-b">
             <div className="container flex h-16 items-center px-4">
               <MainNav />
