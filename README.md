@@ -22,12 +22,14 @@ A trust-based pie competition platform built with Next.js, where users can submi
 ## Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/make-a-pie.git
 cd make-a-pie
 ```
 
 2. Install dependencies:
+
 ```bash
 # Install PNPM if you haven't already
 npm install -g pnpm
@@ -37,6 +39,7 @@ pnpm install
 ```
 
 3. Set up your database:
+
 ```bash
 # Copy example env file
 cp .env.example .env
@@ -46,6 +49,7 @@ pnpm prisma db push
 ```
 
 4. Run the development server:
+
 ```bash
 pnpm dev
 ```
@@ -75,12 +79,14 @@ We welcome contributions! Here's how you can help:
 ## Planned Features
 
 ### Near Term
+
 - 📱 Progressive Web App support
 - 🖼️ Multiple pie images per submission
 - 💬 Comments and feedback system
 - 📊 Advanced voting analytics
 
 ### Future Vision
+
 - 🏆 Seasonal competitions
 - 👥 User profiles and badges
 - 🎯 Categories (fruit pies, savory pies, etc.)
@@ -105,4 +111,57 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For questions or suggestions, please open an issue or contact the maintainers.
 
 ---
+
 Built with Next.js and deployed on Vercel
+
+## Testing
+
+This project uses Jest and React Testing Library for testing components and functionality.
+
+### Running Tests
+
+- Run all tests once:
+
+  ```bash
+  npm test
+  ```
+
+- Run tests in watch mode (recommended during development):
+
+  ```bash
+  npm run test:watch
+  ```
+
+- Run tests with coverage report:
+  ```bash
+  npm run test:coverage
+  ```
+
+### Test Structure
+
+- Tests are located in the `__tests__` directory
+- Each component has its own test file (e.g., `vote-client.test.tsx`)
+- Tests cover:
+  - Component rendering
+  - User interactions
+  - State management
+  - Error handling
+  - Edge cases
+
+### Writing Tests
+
+When writing new tests:
+
+1. Create a new test file in the `__tests__` directory
+2. Import necessary testing utilities and the component to test
+3. Mock external dependencies (hooks, actions, etc.)
+4. Write test cases covering component functionality
+5. Run tests to ensure everything passes
+
+### Testing Best Practices
+
+- Test component behavior, not implementation details
+- Use semantic queries (getByRole, getByText) over testId when possible
+- Mock external dependencies and network calls
+- Test error states and edge cases
+- Keep tests focused and isolated

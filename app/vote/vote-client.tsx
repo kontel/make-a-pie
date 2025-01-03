@@ -23,19 +23,35 @@ export function VoteClient({ initialPies }: VoteClientProps) {
   useEffect(() => {
     if (!userName) {
       router.push("/");
+      return;
     }
+
     // Initialize voted pies and calculate remaining stars
     const voted = new Set(
       initialPies
         .filter((pie) => pie.votes.some((vote) => vote.userName === userName))
         .map((pie) => pie.id)
     );
+
     const usedStars = initialPies.reduce((acc, pie) => {
       const userVote = pie.votes.find((vote) => vote.userName === userName);
       return acc + (userVote?.stars || 0);
     }, 0);
-    setRemainingStars(3 - usedStars);
-    setVotedPies(voted);
+
+    // Use functional updates to ensure state updates are based on previous state
+    setVotedPies((prev) => {
+      if (
+        prev.size === voted.size &&
+        Array.from(prev).every((id) => voted.has(id))
+      ) {
+        return prev;
+      }
+      return voted;
+    });
+    setRemainingStars((prev) => {
+      const newStars = 3 - usedStars;
+      return prev === newStars ? prev : newStars;
+    });
   }, [userName, router, initialPies]);
 
   if (!userName) {
@@ -71,12 +87,13 @@ export function VoteClient({ initialPies }: VoteClientProps) {
             </CardHeader>
             <CardContent>
               {pie.imageData && (
-                <div className="relative w-full h-48 mb-4">
+                <div className="relative aspect-square w-full mb-4 rounded-xl overflow-hidden">
                   <Image
                     src={pie.imageData}
                     alt={pie.title}
                     fill
-                    className="object-cover rounded-md"
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               )}

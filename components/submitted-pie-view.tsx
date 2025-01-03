@@ -82,12 +82,13 @@ export function SubmittedPieView({
             <CardTitle>Your Submitted Pie</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="relative w-full aspect-square rounded-lg overflow-hidden">
+            <div className="relative aspect-square w-full rounded-xl overflow-hidden">
               <Image
                 src={userPie.imageData || ""}
                 alt={userPie.title}
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
             <div className="space-y-2">
