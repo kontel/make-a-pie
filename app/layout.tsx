@@ -13,6 +13,24 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Make a Pie",
   description: "A pie competition app",
+  keywords: "pie, competition, app, baking",
+  authors: [{ name: "Your Name", url: "https://yourwebsite.com" }],
+  openGraph: {
+    title: "Make a Pie",
+    description: "A pie competition app",
+    url: "https://make-a-pie.vercel.app",
+    siteName: "Make a Pie",
+    images: [
+      {
+        url: "/path-to-your-image.jpg",
+        width: 800,
+        height: 600,
+        alt: "A pie competition",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
   icons: {
     icon: [
       {
@@ -38,10 +56,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.className}>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body
+        className={`${inter.variable} font-sans antialiased`}
+        suppressHydrationWarning
+      >
         <div className="flex min-h-screen flex-col">
           <Analytics />
-          <SpeedInsights/>
+          <SpeedInsights />
           <header className="border-b">
             <div className="container flex h-16 items-center px-4">
               <MainNav />
