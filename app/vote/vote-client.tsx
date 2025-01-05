@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocalStorage } from "usehooks-ts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { PieWithVotes, Vote } from "@/types/prisma";
+import type { PieWithVotes } from "@/types/prisma";
 import { submitVote } from "@/app/actions/submit-vote";
 import Image from "next/image";
 
