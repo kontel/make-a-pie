@@ -49,7 +49,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <Link href="/submit-pie">
-              <Button className="w-full">Submit Pie</Button>
+              <Button className="w-full h-12">Submit Pie</Button>
             </Link>
           </CardContent>
         </Card>
@@ -62,7 +62,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <Link href="/vote">
-              <Button className="w-full">Vote</Button>
+              <Button className="w-full h-12">Vote</Button>
             </Link>
           </CardContent>
         </Card>
