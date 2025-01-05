@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { revalidateTag } from "next/cache";
 
 export async function submitVote(
   pieId: string,
@@ -15,6 +16,8 @@ export async function submitVote(
         stars,
       },
     });
+
+    revalidateTag("pieWithVotesCacheKey");
     return { success: true, vote };
   } catch (error) {
     return {

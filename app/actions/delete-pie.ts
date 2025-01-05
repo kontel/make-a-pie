@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function deletePie(pieId: string) {
   try {
@@ -20,6 +20,8 @@ export async function deletePie(pieId: string) {
     });
 
     revalidatePath("/");
+    revalidateTag("pieWithVotesCacheKey");
+    
     return { success: true } as const;
   } catch (error) {
     console.error("Failed to delete pie:", error);

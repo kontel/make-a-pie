@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 export async function submitPie(formData: FormData) {
@@ -25,6 +25,7 @@ export async function submitPie(formData: FormData) {
       },
     });
 
+    revalidateTag("pieWithVotesCacheKey");
     revalidatePath("/");
     return { success: true };
   } catch (error) {

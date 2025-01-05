@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLocalStorage } from "usehooks-ts";
 import {
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { PieWithVotes, Vote } from "@/types/prisma";
+import { useEffect } from "react";
 
 interface LeaderboardClientProps {
   initialPies: PieWithVotes[];
