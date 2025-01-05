@@ -15,7 +15,7 @@ import type { PieWithVotes, Vote } from "@/types/prisma";
 import { useEffect } from "react";
 
 interface LeaderboardClientProps {
-  initialPies: PieWithVotes[];
+  initialPies: Omit<PieWithVotes, 'imageData'>[];
 }
 
 export function LeaderboardClient({ initialPies }: LeaderboardClientProps) {
@@ -35,7 +35,7 @@ export function LeaderboardClient({ initialPies }: LeaderboardClientProps) {
   }
 
   // Calculate statistics
-  const calculateStats = (pies: PieWithVotes[]) => {
+  const calculateStats = (pies: Omit<PieWithVotes, "imageData">[]) => {
     const totalVotes = pies.reduce((acc, pie) => acc + pie.votes.length, 0);
     const totalStars = pies.reduce(
       (acc, pie) => acc + pie.votes.reduce((sum, vote) => sum + vote.stars, 0),
@@ -62,15 +62,17 @@ export function LeaderboardClient({ initialPies }: LeaderboardClientProps) {
     };
   };
 
-  const leaderboard = initialPies.map((pie: PieWithVotes) => ({
-    id: pie.id,
-    name: pie.userName,
-    pieTitle: pie.title,
-    stars: pie.votes.reduce(
-      (total: number, vote: Vote) => total + vote.stars,
-      0
-    ),
-  }));
+  const leaderboard = initialPies.map(
+    (pie: Omit<PieWithVotes, "imageData">) => ({
+      id: pie.id,
+      name: pie.userName,
+      pieTitle: pie.title,
+      stars: pie.votes.reduce(
+        (total: number, vote: Vote) => total + vote.stars,
+        0
+      ),
+    })
+  );
 
   const stats = calculateStats(initialPies);
 

@@ -1,14 +1,19 @@
 import { prisma } from "@/lib/prisma";
-import type { PieWithVotes } from "@/types/prisma";
 import { LeaderboardClient } from "./leaderboard-client";
-import { unstable_cache as cache, unstable_cache } from "next/cache"; // Import the cache from Next.js
+import { unstable_cache } from "next/cache"; 
 
 export default async function Leaderboard() {
 
   const getCachedPiesWithVotes = unstable_cache(
     async () => {
       return await prisma.pie.findMany({
-        include: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          userName: true,
+          createdAt: true,
+          updatedAt: true,
           votes: true,
         },
         orderBy: {
@@ -24,5 +29,3 @@ export default async function Leaderboard() {
 
   return <LeaderboardClient initialPies={pies} />;
 }
-
-export const dynamic = "force-dynamic";
