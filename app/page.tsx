@@ -13,7 +13,8 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Home() {
-  const { name, localStorageUserName, handleLogin, reset, continueToApp } = useAuth();
+  const { name, localStorageUserName, handleLogin, reset, continueToApp } =
+    useAuth();
 
   return (
     <div className="flex min-h-screen flex-col items-center p-4 gap-6">
@@ -23,7 +24,7 @@ export default function Home() {
         height={200}
         width={200}
         className="rounded-lg shadow-lg object-cover"
-        priority
+        loading="lazy"
       />
       <Card className="w-full max-w-md">
         <CardHeader>
