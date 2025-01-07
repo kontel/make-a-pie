@@ -1,7 +1,3 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useLocalStorage } from "usehooks-ts";
 import {
   Table,
   TableBody,
@@ -12,28 +8,12 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { PieWithVotes, Vote } from "@/types/prisma";
-import { useEffect } from "react";
 
 interface LeaderboardClientProps {
-  initialPies: Omit<PieWithVotes, 'imageData'>[];
+  initialPies: Omit<PieWithVotes, "imageData">[];
 }
 
 export function LeaderboardClient({ initialPies }: LeaderboardClientProps) {
-  const [userName] = useLocalStorage("userName", "", {
-    initializeWithValue: true,
-  });
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!userName) {
-      router.push("/");
-    }
-  }, [router, userName]);
-
-  if (!userName) {
-    return null;
-  }
-
   // Calculate statistics
   const calculateStats = (pies: Omit<PieWithVotes, "imageData">[]) => {
     const totalVotes = pies.reduce((acc, pie) => acc + pie.votes.length, 0);
