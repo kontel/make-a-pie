@@ -1,16 +1,30 @@
 import { prisma } from "@/lib/prisma";
-import type { PieWithVotes } from "@/types/prisma";
 import { VoteClient } from "./vote-client";
+import { unstable_cache } from "next/cache";
 
 export default async function Vote() {
-  const pies: PieWithVotes[] = await prisma.pie.findMany({
-    include: {
-      votes: true,
+  const getCachedPiesWithVotes = unstable_cache(
+    async () => {
+      return await prisma.pie.findMany({
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          userName: true,
+          createdAt: true,
+          updatedAt: true,
+          votes: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
     },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+    ["pieWithVotesCacheKey"],
+    { revalidate: 60, tags: ["pieWithVotesCacheKey"] }
+  );
+
+  const pies = await getCachedPiesWithVotes();
 
   return <VoteClient initialPies={pies} />;
 }

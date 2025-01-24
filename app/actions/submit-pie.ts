@@ -10,19 +10,26 @@ export async function submitPie(formData: FormData) {
     const imageFile = formData.get("image") as File;
     const userName = formData.get("userName") as string;
 
+    // First create the pie without image data
+    const pie = await prisma.pie.create({
+      data: {
+        title,
+        description,
+        userName: userName.replaceAll('"', ""),
+        imageData: "", // Initialize with empty string
+      },
+    });
+
+    // Then update with image data separately
     const bytes = await imageFile.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const imageData = `data:${imageFile.type};base64,${buffer.toString(
       "base64"
     )}`;
 
-    await prisma.pie.create({
-      data: {
-        title,
-        description,
-        imageData: imageData,
-        userName: userName.replaceAll('"', ""),
-      },
+    await prisma.pie.update({
+      where: { id: pie.id },
+      data: { imageData },
     });
 
     revalidateTag("pieWithVotesCacheKey");

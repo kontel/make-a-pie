@@ -7,9 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { PieWithVotes } from "@/types/prisma";
 import { submitVote } from "@/app/actions/submit-vote";
 import Image from "next/image";
+import { getPieImage } from "@/app/actions/get-pie-image";
 
 interface VoteClientProps {
-  initialPies: PieWithVotes[];
+  initialPies: Omit<PieWithVotes, "imageData">[];
 }
 
 export function VoteClient({ initialPies }: VoteClientProps) {
@@ -19,6 +20,10 @@ export function VoteClient({ initialPies }: VoteClientProps) {
   const router = useRouter();
   const [votedPies, setVotedPies] = useState<Set<string>>(new Set());
   const [remainingStars, setRemainingStars] = useState(3);
+  const [pieImages, setPieImages] = useState<Record<string, string>>({});
+  const [loadingImages, setLoadingImages] = useState<Record<string, boolean>>(
+    {}
+  );
 
   useEffect(() => {
     if (!userName) {
@@ -48,12 +53,42 @@ export function VoteClient({ initialPies }: VoteClientProps) {
       }
       return voted;
     });
-    
+
     setRemainingStars((prev: number) => {
       const newStars = 3 - usedStars;
       return prev === newStars ? prev : newStars;
     });
   }, [userName, router, initialPies]);
+
+  // Modified to use server action
+  const fetchPieImage = async (pieId: string) => {
+    try {
+      setLoadingImages((prev) => ({
+        ...prev,
+        [pieId]: true,
+      }));
+      const imageData = await getPieImage(pieId);
+      if (imageData) {
+        setPieImages((prev) => ({
+          ...prev,
+          [pieId]: imageData,
+        }));
+      }
+    } catch (error) {
+      console.error(`Failed to load image for pie ${pieId}:`, error);
+    } finally {
+      setLoadingImages((prev) => ({
+        ...prev,
+        [pieId]: false,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    initialPies.forEach((pie) => {
+      fetchPieImage(pie.id);
+    });
+  }, [initialPies]);
 
   if (!userName) {
     return null;
@@ -87,17 +122,26 @@ export function VoteClient({ initialPies }: VoteClientProps) {
               <CardTitle>{pie.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              {pie.imageData && (
-                <div className="relative aspect-square w-full mb-4 rounded-xl overflow-hidden">
+              <div className="relative aspect-square w-full mb-4 rounded-xl overflow-hidden">
+                {(!pieImages[pie.id] || loadingImages[pie.id]) && (
+                  <div className="absolute inset-0 flex flex-col gap-2 p-4 bg-muted">
+                    {/* Image placeholder */}
+                    <div className="flex-1 bg-muted-foreground/10 rounded-lg animate-pulse" />
+                    {/* Text line placeholders */}
+                    <div className="h-4 w-3/4 bg-muted-foreground/10 rounded animate-pulse" />
+                    <div className="h-4 w-1/2 bg-muted-foreground/10 rounded animate-pulse" />
+                  </div>
+                )}
+                {pieImages[pie.id] && (
                   <Image
-                    src={pie.imageData}
+                    src={pieImages[pie.id]}
                     alt={pie.title}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
-                </div>
-              )}
+                )}
+              </div>
               <p>Baker: {pie.userName}</p>
               {votedPies.has(pie.id) ? (
                 <p className="text-muted-foreground">Already voted!</p>

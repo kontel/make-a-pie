@@ -23,11 +23,13 @@ import { useState } from "react";
 
 interface SubmittedPieViewProps {
   userPie: PieWithVotes;
+  isLoading?: boolean;
   onPieDeleted?: () => void;
 }
 
 export function SubmittedPieView({
   userPie,
+  isLoading,
   onPieDeleted,
 }: SubmittedPieViewProps) {
   const { toast } = useToast();
@@ -82,14 +84,23 @@ export function SubmittedPieView({
             <CardTitle>Your Submitted Pie</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="relative aspect-square w-full rounded-xl overflow-hidden">
-              <Image
-                src={userPie.imageData || ""}
-                alt={userPie.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
+            <div className="relative aspect-square w-full mb-4 rounded-xl overflow-hidden">
+              {(isLoading || !userPie.imageData) && (
+                <div className="absolute inset-0 flex flex-col gap-2 p-4 bg-muted">
+                  <div className="flex-1 bg-muted-foreground/10 rounded-lg animate-pulse" />
+                  <div className="h-4 w-3/4 bg-muted-foreground/10 rounded animate-pulse" />
+                  <div className="h-4 w-1/2 bg-muted-foreground/10 rounded animate-pulse" />
+                </div>
+              )}
+              {userPie.imageData && (
+                <Image
+                  src={userPie.imageData}
+                  alt={userPie.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              )}
             </div>
             <div className="space-y-2">
               <h3 className="font-semibold text-xl">{userPie.title}</h3>
