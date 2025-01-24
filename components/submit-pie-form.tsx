@@ -73,6 +73,7 @@ export function SubmitPieForm({ userName }: SubmitPieFormProps) {
         });
       }
     } catch (error) {
+      console.error("Error submitting pie:", error);
       toast({
         title: "Error",
         description: "Failed to process image. Please try again.",
