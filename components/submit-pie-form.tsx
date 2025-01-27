@@ -11,7 +11,7 @@ import { useFormStatus } from "react-dom";
 import { submitPie } from "@/app/actions/submit-pie";
 import { Label } from "./ui/label";
 import { compressImage } from "@/app/utils/imageCompression";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { generateImageDescription } from "@/app/actions/generate-image-description";
 
 interface SubmitPieFormProps {
@@ -80,6 +80,25 @@ export function SubmitPieForm({ userName }: SubmitPieFormProps) {
   const { toast } = useToast();
   const [base64ImageData, setBase64ImageData] = useState<string | null>(null);
   const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+
+  const loadingMessages = [
+    "AI is analyzing your delicious pie...",
+    "Detecting ingredients and style...",
+    "Crafting a description of your masterpiece...",
+    "Almost done describing your beautiful creation...",
+  ];
+
+  // Add an effect to rotate through messages
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isGeneratingDescription) {
+      interval = setInterval(() => {
+        setLoadingMessageIndex((prev) => (prev + 1) % loadingMessages.length);
+      }, 2000); // Change message every 2 seconds
+    }
+    return () => clearInterval(interval);
+  }, [isGeneratingDescription, loadingMessages.length]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -198,7 +217,7 @@ export function SubmitPieForm({ userName }: SubmitPieFormProps) {
               name="description"
               placeholder={
                 isGeneratingDescription
-                  ? "Generating description..."
+                  ? loadingMessages[loadingMessageIndex]
                   : "Share the story behind your pie! For example: 'This is my grandmother's classic apple pie recipe, made with fresh-picked apples from our local orchard. The lattice top took some practice but I'm really proud of how it turned out!' You can also include a link to your recipe: https://example.com/recipe"
               }
               rows={5}
