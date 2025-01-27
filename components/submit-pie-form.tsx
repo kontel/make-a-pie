@@ -194,11 +194,12 @@ export function SubmitPieForm({ userName }: SubmitPieFormProps) {
       <CardContent className="flex flex-col items-center">
         <form action={clientAction} className="space-y-4 w-full">
           <div className="relative">
-            <Label htmlFor="file-upload">Upload a photo of your pie</Label>
+            <Label htmlFor="file-upload">Firstly, let&apos;s upload a photo of your pie</Label>
             <input
               id="file-upload"
               name="image"
               type="file"
+              capture="environment"
               accept="image/*"
               className="mt-2 block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
               required
