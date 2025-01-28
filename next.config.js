@@ -21,7 +21,17 @@ const nextConfig = {
       },
     ],
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+  serverRuntimeConfig: {
+    api: {
+      responseLimit: false,
+      bodyParser: {
+        sizeLimit: "10mb",
+      },
+      externalResolver: true,
+      timeout: 30,
+    },
   },
 };
 
