@@ -1,7 +1,7 @@
 "use server";
 
 import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
+//import { openai } from "@ai-sdk/openai";
 import { anthropic } from "@ai-sdk/anthropic";
 
 export async function generateImageDescription(base64ImageData: string) {
