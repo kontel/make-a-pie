@@ -110,24 +110,25 @@ export function SubmitPieForm({ userName }: SubmitPieFormProps) {
       const compressedImageData = await compressImage(file);
       setBase64ImageData(compressedImageData);
 
-      // Generate description using AI
-      const result = await generateImageDescription(compressedImageData);
+      // Only generate description if feature flag is enabled
+      if (process.env.NEXT_PUBLIC_ENABLE_AI_DESCRIPTION === "true") {
+        const result = await generateImageDescription(compressedImageData);
 
-      if (result.success) {
-        // Find the description textarea and set its value
-        const descriptionTextarea = document.querySelector(
-          'textarea[name="description"]'
-        ) as HTMLTextAreaElement;
-        if (descriptionTextarea && result.description) {
-          descriptionTextarea.value = result.description;
+        if (result.success) {
+          const descriptionTextarea = document.querySelector(
+            'textarea[name="description"]'
+          ) as HTMLTextAreaElement;
+          if (descriptionTextarea && result.description) {
+            descriptionTextarea.value = result.description;
+          }
+        } else {
+          toast({
+            title: "Warning",
+            description:
+              "Could not generate image description. You can still write your own!",
+            variant: "default",
+          });
         }
-      } else {
-        toast({
-          title: "Warning",
-          description:
-            "Could not generate image description. You can still write your own!",
-          variant: "default",
-        });
       }
     } catch (error) {
       console.error("Error processing image:", error);
@@ -194,7 +195,9 @@ export function SubmitPieForm({ userName }: SubmitPieFormProps) {
       <CardContent className="flex flex-col items-center">
         <form action={clientAction} className="space-y-4 w-full">
           <div className="relative">
-            <Label htmlFor="file-upload">Firstly, let&apos;s upload a photo of your pie</Label>
+            <Label htmlFor="file-upload">
+              Firstly, let&apos;s upload a photo of your pie
+            </Label>
             <input
               id="file-upload"
               name="image"

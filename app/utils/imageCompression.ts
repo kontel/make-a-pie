@@ -33,7 +33,7 @@ export async function compressImage(
         ctx?.drawImage(img, 0, 0, width, height);
 
         // Compress as JPEG with 0.8 quality
-        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.8);
+        const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.5);
         resolve(compressedDataUrl);
       };
       img.onerror = reject;
