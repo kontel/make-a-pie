@@ -111,8 +111,9 @@ export function SubmitPieForm({ userName }: SubmitPieFormProps) {
       setBase64ImageData(compressedImageData);
 
       // Only generate description if feature flag is enabled
-      if (process.env.NEXT_PUBLIC_ENABLE_AI_DESCRIPTION === "true") {
+      if (!!process.env.NEXT_PUBLIC_ENABLE_AI_DESCRIPTION === true) {
         const result = await generateImageDescription(compressedImageData);
+        console.log("result", result);
 
         if (result.success) {
           const descriptionTextarea = document.querySelector(
